@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mushub Updater</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&display=swap');
+
+    :root {
+      --bg:          #0d1117;
+      --bg2:         #161b22;
+      --border:      #30363d;
+      --green:       #56d364;
+      --green-dim:   #2ea043;
+      --yellow:      #e3b341;
+      --red:         #f85149;
+      --blue:        #79c0ff;
+      --purple:      #d2a8ff;
+      --white:       #f0f6fc;
+      --muted:       #8b949e;
+      --accent:      #58a6ff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%; height: 100%;
+      background: var(--bg);
+      font-family: 'JetBrains Mono', 'Cascadia Code', 'Consolas', monospace;
+      font-size: 13px;
+      color: var(--white);
+      overflow: hidden;
+      user-select: none;
+    }
+
+    /* ── Title bar ── */
+    .titlebar {
+      height: 36px;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12px;
+      cursor: grab;
+      -webkit-user-select: none;
+    }
+    .titlebar-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    /* Traffic light dots */
+    .tl-dots {
+      display: flex;
+      gap: 6px;
+    }
+    .tl-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+    .tl-red    { background: #ff5f57; }
+    .tl-yellow { background: #ffbd2e; }
+    .tl-green  { background: #28c840; }
+
+    .titlebar-title {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 400;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Terminal body ── */
+    .terminal {
+      height: calc(100vh - 36px);
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+      gap: 12px;
+    }
+
+    /* ── Header banner ── */
+    .banner {
+      border: 1px solid var(--green-dim);
+      border-radius: 6px;
+      padding: 10px 14px;
+      background: rgba(86, 211, 100, 0.05);
+    }
+    .banner-line {
+      color: var(--green);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+    .banner-sub {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 2px;
+    }
+
+    /* ── Log area ── */
+    .log-area {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 12px;
+    }
+    .log-line {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      line-height: 1.5;
+      font-size: 12px;
+      opacity: 0;
+      animation: appear 180ms ease forwards;
+    }
+    @keyframes appear {
+      from { opacity: 0; transform: translateX(-4px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    .log-prefix { flex-shrink: 0; min-width: 6px; }
+    .log-text   { flex: 1; word-break: break-word; }
+
+    /* Log kinds */
+    .log-step    .log-prefix { color: var(--purple); }
+    .log-step    .log-text   { color: var(--purple); font-weight: 600; }
+    .log-info    .log-prefix { color: var(--blue); }
+    .log-info    .log-text   { color: var(--muted); }
+    .log-success .log-prefix { color: var(--green); }
+    .log-success .log-text   { color: var(--green); }
+    .log-warn    .log-prefix { color: var(--yellow); }
+    .log-warn    .log-text   { color: var(--yellow); }
+    .log-error   .log-prefix { color: var(--red); }
+    .log-error   .log-text   { color: var(--red); }
+
+    .log-prefix-map {
+      step:    "◆";
+      info:    "›";
+      success: "✓";
+      warn:    "⚠";
+      error:   "✗";
+    }
+
+    /* ── Spinner ── */
+    .spinner-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--blue);
+      font-size: 12px;
+      padding: 4px 0;
+    }
+    .spinner {
+      display: inline-block;
+      width: 14px;
+      text-align: center;
+      animation: spin 600ms steps(4, end) infinite;
+    }
+    @keyframes spin {
+      0%   { content: "⠋"; }
+    }
+    .spinner::after {
+      content: "⠋";
+      animation: spinChars 600ms steps(8) infinite;
+    }
+    @keyframes spinChars {
+      0%   { content: "⠋"; }
+      12%  { content: "⠙"; }
+      25%  { content: "⠹"; }
+      37%  { content: "⠸"; }
+      50%  { content: "⠼"; }
+      62%  { content: "⠴"; }
+      75%  { content: "⠦"; }
+      87%  { content: "⠧"; }
+      100% { content: "⠏"; }
+    }
+
+    /* ── ASCII error box ── */
+    .error-box {
+      border: 1px solid var(--red);
+      border-radius: 6px;
+      padding: 12px;
+      background: rgba(248, 81, 73, 0.07);
+      display: none;
+    }
+    .error-box.visible { display: block; }
+    .error-ascii {
+      color: var(--red);
+      font-size: 11px;
+      white-space: pre;
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+    .error-detail {
+      color: rgba(248, 81, 73, 0.85);
+      font-size: 11px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+    .error-report {
+      color: var(--muted);
+      font-size: 10px;
+      margin-top: 8px;
+    }
+    .error-report a { color: var(--accent); cursor: pointer; }
+
+    /* ── Bottom bar ── */
+    .bottom-bar {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      align-items: center;
+    }
+    .btn {
+      border: none;
+      border-radius: 5px;
+      padding: 7px 18px;
+      font-family: inherit;
+      font-size: 12px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: opacity 120ms, transform 80ms;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn-primary {
+      background: var(--green-dim);
+      color: white;
+    }
+    .btn-primary:hover { opacity: 0.9; }
+    .btn-secondary {
+      background: var(--bg2);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { color: var(--white); }
+    .btn-danger {
+      background: rgba(248,81,73,0.15);
+      color: var(--red);
+      border: 1px solid rgba(248,81,73,0.3);
+    }
+    .btn-danger:hover { background: rgba(248,81,73,0.25); }
+
+    /* Update available panel */
+    .update-panel {
+      background: rgba(88,166,255,0.07);
+      border: 1px solid rgba(88,166,255,0.25);
+      border-radius: 6px;
+      padding: 12px 14px;
+      display: none;
+    }
+    .update-panel.visible { display: block; }
+    .update-version {
+      font-size: 13px;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .update-notes {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.5;
+      max-height: 60px;
+      overflow-y: auto;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Title bar -->
+<div class="titlebar" data-tauri-drag-region>
+  <div class="titlebar-left">
+    <div class="tl-dots">
+      <div class="tl-dot tl-red"    onclick="closeWindow()"></div>
+      <div class="tl-dot tl-yellow"></div>
+      <div class="tl-dot tl-green"></div>
+    </div>
+    <span class="titlebar-title">mushub-updater — bash</span>
+  </div>
+  <span style="font-size:11px;color:var(--muted)">🍄</span>
+</div>
+
+<!-- Terminal body -->
+<div class="terminal">
+
+  <!-- Banner -->
+  <div class="banner">
+    <div class="banner-line">🍄  M U S H U B  —  Updater</div>
+    <div class="banner-sub">github.com/UnMushin/mushubapp  •  Vérification des mises à jour...</div>
+  </div>
+
+  <!-- Log area -->
+  <div class="log-area" id="log-area">
+    <div class="spinner-row" id="spinner-row">
+      <span class="spinner"></span>
+      <span id="spinner-text">Initialisation...</span>
+    </div>
+  </div>
+
+  <!-- Error box (hidden by default) -->
+  <div class="error-box" id="error-box">
+    <pre class="error-ascii">
+  ╔══════════════════════════════════════╗
+  ║   ✗  Une erreur s'est produite       ║
+  ╚══════════════════════════════════════╝</pre>
+    <div class="error-detail" id="error-detail"></div>
+    <div class="error-report">
+      Signaler ce problème :
+      <a onclick="openIssues()">github.com/UnMushin/mushubapp/issues</a>
+    </div>
+  </div>
+
+  <!-- Update available panel (hidden by default) -->
+  <div class="update-panel" id="update-panel">
+    <div class="update-version" id="update-version"></div>
+    <div class="update-notes" id="update-notes"></div>
+  </div>
+
+  <!-- Bottom actions -->
+  <div class="bottom-bar" id="bottom-bar">
+    <span style="color:var(--muted);font-size:11px" id="status-text">Veuillez patienter...</span>
+  </div>
+
+</div>
+
+<script type="module">
+  import { invoke }    from "https://unpkg.com/@tauri-apps/api@1/tauri";
+  import { listen }    from "https://unpkg.com/@tauri-apps/api@1/event";
+  import { appWindow } from "https://unpkg.com/@tauri-apps/api@1/window";
+
+  const logArea     = document.getElementById("log-area");
+  const spinnerRow  = document.getElementById("spinner-row");
+  const errorBox    = document.getElementById("error-box");
+  const updatePanel = document.getElementById("update-panel");
+  const bottomBar   = document.getElementById("bottom-bar");
+  const statusText  = document.getElementById("status-text");
+
+  const PREFIX = {
+    step:    "◆",
+    info:    "›",
+    success: "✓",
+    warn:    "⚠",
+    error:   "✗",
+  };
+
+  function addLog(kind, text) {
+    const line = document.createElement("div");
+    line.className = `log-line log-${kind}`;
+    line.innerHTML = `
+      <span class="log-prefix">${PREFIX[kind] ?? "·"}</span>
+      <span class="log-text">${escHtml(text)}</span>
+    `;
+    logArea.appendChild(line);
+    logArea.scrollTop = logArea.scrollHeight;
+  }
+
+  function escHtml(s) {
+    return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  }
+
+  // ── Listen for backend log events ──────────────────────────────────────
+  await listen("updater-log", ({ payload }) => {
+    addLog(payload.kind, payload.text);
+    spinnerRow.querySelector("#spinner-text").textContent = payload.text;
+  });
+
+  // ── Run update check ──────────────────────────────────────────────────
+  let result;
+  try {
+    result = await invoke("run_update_check");
+  } catch (e) {
+    spinnerRow.remove();
+    showError(`Erreur inattendue dans l'updater:\n${e}\n\nSignalez ce bug sur GitHub.`);
+    return;
+  }
+
+  spinnerRow.remove();
+
+  if (result.status === "error") {
+    showError(result.error ?? "Erreur inconnue.");
+    return;
+  }
+
+  if (result.status === "up_to_date") {
+    // Auto-launch Mushub after 1.5s
+    addLog("success", "Lancement de Mushub dans 1 seconde...");
+    statusText.textContent = "Lancement en cours...";
+    showLaunchButton();
+    setTimeout(() => invoke("launch_mushub_and_exit"), 1500);
+    return;
+  }
+
+  if (result.status === "update_available") {
+    addLog("warn", `Nouvelle version disponible : ${result.latest_version}`);
+    showUpdateAvailable(result);
+  }
+
+  // ── Helpers ────────────────────────────────────────────────────────────
+  function showError(msg) {
+    errorBox.classList.add("visible");
+    document.getElementById("error-detail").textContent = msg;
+    bottomBar.innerHTML = `
+      <button class="btn btn-secondary" onclick="closeWindow()">Fermer</button>
+      <button class="btn btn-danger"    onclick="openIssues()">🐛 Signaler le bug</button>
+    `;
+    statusText && (statusText.style.display = "none");
+  }
+
+  function showLaunchButton() {
+    bottomBar.innerHTML = `
+      <button class="btn btn-primary" onclick='invoke("launch_mushub_and_exit")'>
+        ▶ Lancer Mushub maintenant
+      </button>
+    `;
+  }
+
+  function showUpdateAvailable(result) {
+    const panel = document.getElementById("update-panel");
+    panel.classList.add("visible");
+    document.getElementById("update-version").textContent =
+      `✨ Mushub ${result.latest_version} est disponible !`;
+    if (result.release_notes) {
+      document.getElementById("update-notes").textContent =
+        result.release_notes.slice(0, 300);
+    }
+
+    bottomBar.innerHTML = `
+      <button class="btn btn-secondary" onclick='invoke("launch_mushub_and_exit")'>
+        Plus tard
+      </button>
+      <button class="btn btn-primary" onclick="downloadUpdate('${result.download_url}')">
+        ⬇ Télécharger & installer
+      </button>
+    `;
+  }
+
+  window.closeWindow  = () => appWindow.close();
+  window.openIssues   = () => invoke("open_download_url", { url: "https://github.com/UnMushin/mushubapp/issues" });
+  window.downloadUpdate = (url) => invoke("open_download_url", { url });
+  window.invoke       = invoke;
+</script>
+</body>
+</html>
