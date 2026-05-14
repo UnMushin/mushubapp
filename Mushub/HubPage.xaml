@@ -1,0 +1,95 @@
+<UserControl x:Class="Mushub.Views.HubPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="28,24,28,16">
+            <TextBlock Text="⚡ MINI-HUB"
+                       Foreground="{StaticResource AccentLightBrush}"
+                       FontFamily="Segoe UI Variable Display"
+                       FontSize="11" FontWeight="SemiBold"/>
+            <TextBlock Text="Vos raccourcis favoris"
+                       Foreground="{StaticResource TextSecondaryBrush}"
+                       FontSize="13" Margin="0,4,0,0"/>
+        </StackPanel>
+
+        <!-- Stream Deck Grid -->
+        <ScrollViewer Grid.Row="1" Margin="28,0,28,16"
+                      VerticalScrollBarVisibility="Auto"
+                      Style="{StaticResource Win11ScrollViewer}">
+            <UniformGrid x:Name="HubGrid"
+                         Columns="3"
+                         Margin="0,0,0,8">
+                <!-- Tiles are populated dynamically -->
+            </UniformGrid>
+        </ScrollViewer>
+
+        <!-- Add shortcut bar -->
+        <Border Grid.Row="2" Margin="28,0,28,24"
+                Style="{StaticResource CardBorder}"
+                Padding="16,14">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="Emoji"
+                           Foreground="{StaticResource TextMutedBrush}"
+                           FontSize="12" VerticalAlignment="Center" Margin="0,0,8,0"/>
+
+                <TextBox x:Name="NewTileEmoji" Grid.Column="0"
+                         Style="{StaticResource Win11TextBox}"
+                         Width="56" Height="38"
+                         MaxLength="2"
+                         FontSize="20"
+                         HorizontalContentAlignment="Center"
+                         VerticalContentAlignment="Center"
+                         Text="🌐"
+                         ToolTip="Emoji du raccourci"
+                         Margin="0,0,8,0"/>
+
+                <TextBox x:Name="NewTileLabel" Grid.Column="1"
+                         Style="{StaticResource Win11TextBox}"
+                         Height="38"
+                         FontSize="13"
+                         VerticalContentAlignment="Center"
+                         ToolTip="Nom du raccourci"
+                         Margin="0,0,8,0">
+                    <TextBox.Resources>
+                        <Style TargetType="Border"><Setter Property="CornerRadius" Value="8"/></Style>
+                    </TextBox.Resources>
+                </TextBox>
+
+                <TextBox x:Name="NewTileUrl" Grid.Column="2"
+                         Style="{StaticResource Win11TextBox}"
+                         Height="38"
+                         FontSize="13"
+                         VerticalContentAlignment="Center"
+                         ToolTip="URL ou chemin vers l'application"
+                         Margin="0,0,8,0">
+                    <TextBox.Resources>
+                        <Style TargetType="Border"><Setter Property="CornerRadius" Value="8"/></Style>
+                    </TextBox.Resources>
+                </TextBox>
+
+                <Button Grid.Column="3"
+                        Style="{StaticResource AccentButton}"
+                        Height="38"
+                        Padding="14,0"
+                        Click="AddTile_Click">
+                    <TextBlock Text="＋ Ajouter" FontSize="12"/>
+                </Button>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

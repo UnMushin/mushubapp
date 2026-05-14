@@ -1,0 +1,201 @@
+<UserControl x:Class="Mushub.Views.PomodoroPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <!-- Timer center -->
+            <RowDefinition Height="Auto"/>
+            <!-- Controls -->
+            <RowDefinition Height="Auto"/>
+            <!-- Settings card -->
+        </Grid.RowDefinitions>
+
+        <!-- ═══════════════════════════════════════════
+             TIMER DISPLAY (Windows Clock inspired)
+             ═══════════════════════════════════════════ -->
+        <Grid Grid.Row="0" VerticalAlignment="Center">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                <!-- Session label -->
+                <TextBlock x:Name="SessionLabel"
+                           Text="SESSION DE TRAVAIL"
+                           Foreground="{StaticResource AccentLightBrush}"
+                           FontFamily="Segoe UI Variable Display"
+                           FontSize="11" FontWeight="SemiBold"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,24"/>
+
+                <!-- Arc Timer Canvas -->
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Canvas Width="260" Height="260">
+                        <!-- Background circle -->
+                        <Ellipse Canvas.Left="10" Canvas.Top="10"
+                                 Width="240" Height="240"
+                                 Stroke="{StaticResource BorderBrush2}"
+                                 StrokeThickness="6"
+                                 Fill="{StaticResource CardBrush}">
+                            <Ellipse.Effect>
+                                <DropShadowEffect Color="#FF000000" BlurRadius="20" ShadowDepth="4" Opacity="0.5"/>
+                            </Ellipse.Effect>
+                        </Ellipse>
+
+                        <!-- Progress Arc -->
+                        <Path x:Name="ProgressArc"
+                              Canvas.Left="10" Canvas.Top="10"
+                              Stroke="{StaticResource AccentGradientBrush}"
+                              StrokeThickness="6"
+                              StrokeStartLineCap="Round"
+                              StrokeEndLineCap="Round"
+                              Fill="Transparent">
+                            <Path.Data>
+                                <PathGeometry x:Name="ArcGeometry"/>
+                            </Path.Data>
+                            <Path.Effect>
+                                <DropShadowEffect Color="#FF7C4DFF" BlurRadius="12" ShadowDepth="0" Opacity="0.8"/>
+                            </Path.Effect>
+                        </Path>
+
+                        <!-- Pulse dot at arc end -->
+                        <Ellipse x:Name="PulseDot"
+                                 Width="12" Height="12"
+                                 Fill="{StaticResource AccentLightBrush}"
+                                 Canvas.Left="124" Canvas.Top="4">
+                            <Ellipse.Effect>
+                                <DropShadowEffect Color="#FFB47AFF" BlurRadius="8" ShadowDepth="0" Opacity="1"/>
+                            </Ellipse.Effect>
+                        </Ellipse>
+                    </Canvas>
+
+                    <!-- Center time display -->
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock x:Name="TimerDisplay"
+                                   Text="25:00"
+                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                   FontFamily="Segoe UI Variable Display"
+                                   FontSize="52" FontWeight="Light"
+                                   HorizontalAlignment="Center"/>
+
+                        <TextBlock x:Name="TimerPhaseText"
+                                   Text="Travail"
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   FontFamily="Segoe UI Variable Text"
+                                   FontSize="13"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,2,0,0"/>
+
+                        <TextBlock x:Name="SessionCountText"
+                                   Text="Session 1/4"
+                                   Foreground="{StaticResource TextMutedBrush}"
+                                   FontFamily="Segoe UI Variable Text"
+                                   FontSize="11"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,4,0,0"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Pomodoro dots (sessions tracker) -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+                    <Ellipse x:Name="Dot1" Width="10" Height="10" Fill="{StaticResource AccentBrush}" Margin="4,0"/>
+                    <Ellipse x:Name="Dot2" Width="10" Height="10" Fill="{StaticResource BorderBrush2}" Margin="4,0"/>
+                    <Ellipse x:Name="Dot3" Width="10" Height="10" Fill="{StaticResource BorderBrush2}" Margin="4,0"/>
+                    <Ellipse x:Name="Dot4" Width="10" Height="10" Fill="{StaticResource BorderBrush2}" Margin="4,0"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+
+        <!-- ═══════════════════════════════════════════
+             CONTROLS
+             ═══════════════════════════════════════════ -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center"
+                    Margin="0,0,0,20">
+
+            <Button x:Name="ResetButton" Style="{StaticResource Win11Button}"
+                    Width="48" Height="48" Padding="0"
+                    Click="ResetButton_Click" Margin="8,0"
+                    ToolTip="Réinitialiser">
+                <TextBlock Text="↺" FontSize="20"/>
+            </Button>
+
+            <Button x:Name="StartStopButton" Style="{StaticResource AccentButton}"
+                    Width="80" Height="48" Padding="0"
+                    Click="StartStop_Click" Margin="8,0">
+                <TextBlock x:Name="StartStopText" Text="▶ Start" FontSize="14" FontWeight="SemiBold"/>
+            </Button>
+
+            <Button x:Name="SkipButton" Style="{StaticResource Win11Button}"
+                    Width="48" Height="48" Padding="0"
+                    Click="SkipButton_Click" Margin="8,0"
+                    ToolTip="Passer à la phase suivante">
+                <TextBlock Text="⏭" FontSize="20"/>
+            </Button>
+        </StackPanel>
+
+        <!-- ═══════════════════════════════════════════
+             SETTINGS CARD (Modular timers)
+             ═══════════════════════════════════════════ -->
+        <Border Grid.Row="2" Margin="28,0,28,24"
+                Style="{StaticResource CardBorder}"
+                Padding="24,20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Work duration -->
+                <StackPanel Grid.Column="0" Margin="0,0,16,0">
+                    <TextBlock Text="🍅 TRAVAIL" FontSize="10" FontWeight="SemiBold"
+                               Foreground="{StaticResource AccentLightBrush}"
+                               Margin="0,0,0,8"/>
+                    <TextBlock x:Name="WorkLabel" Text="25 min"
+                               Foreground="{StaticResource TextPrimaryBrush}"
+                               FontFamily="Segoe UI Variable Display"
+                               FontSize="22" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                    <Slider x:Name="WorkSlider"
+                            Style="{StaticResource Win11Slider}"
+                            Minimum="1" Maximum="60" Value="25"
+                            TickFrequency="1" IsSnapToTickEnabled="True"
+                            Margin="0,8,0,0"
+                            ValueChanged="WorkSlider_ValueChanged"/>
+                </StackPanel>
+
+                <!-- Short break -->
+                <StackPanel Grid.Column="1" Margin="0,0,16,0">
+                    <TextBlock Text="☕ PAUSE COURTE" FontSize="10" FontWeight="SemiBold"
+                               Foreground="{StaticResource SuccessBrush}"
+                               Margin="0,0,0,8"/>
+                    <TextBlock x:Name="ShortBreakLabel" Text="5 min"
+                               Foreground="{StaticResource TextPrimaryBrush}"
+                               FontFamily="Segoe UI Variable Display"
+                               FontSize="22" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                    <Slider x:Name="ShortBreakSlider"
+                            Style="{StaticResource Win11Slider}"
+                            Minimum="1" Maximum="30" Value="5"
+                            TickFrequency="1" IsSnapToTickEnabled="True"
+                            Margin="0,8,0,0"
+                            ValueChanged="ShortBreakSlider_ValueChanged"/>
+                </StackPanel>
+
+                <!-- Long break -->
+                <StackPanel Grid.Column="2">
+                    <TextBlock Text="🛌 GRANDE PAUSE" FontSize="10" FontWeight="SemiBold"
+                               Foreground="{StaticResource WarningBrush}"
+                               Margin="0,0,0,8"/>
+                    <TextBlock x:Name="LongBreakLabel" Text="15 min"
+                               Foreground="{StaticResource TextPrimaryBrush}"
+                               FontFamily="Segoe UI Variable Display"
+                               FontSize="22" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                    <Slider x:Name="LongBreakSlider"
+                            Style="{StaticResource Win11Slider}"
+                            Minimum="5" Maximum="60" Value="15"
+                            TickFrequency="1" IsSnapToTickEnabled="True"
+                            Margin="0,8,0,0"
+                            ValueChanged="LongBreakSlider_ValueChanged"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

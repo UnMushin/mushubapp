@@ -1,0 +1,101 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\unmushin\\Desktop\\app\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\unmushin\\AppData\\Local\\Temp\\.vsdbgsrc\\5db00dcc32c2438d68438e1fcc211058187d505b791085c50320c78abe91b13b\\XamlReader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|Mushub\\Mushub.csproj|c:\\users\\unmushin\\desktop\\app\\mushub\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|Mushub\\Mushub.csproj|solutionrelative:mushub\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|Mushub\\Mushub.csproj|c:\\users\\unmushin\\desktop\\app\\mushub\\pomodoropage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|Mushub\\Mushub.csproj|solutionrelative:mushub\\pomodoropage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|Mushub\\Mushub.csproj|c:\\users\\unmushin\\desktop\\app\\mushub\\githubservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|Mushub\\Mushub.csproj|solutionrelative:mushub\\githubservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|Mushub\\Mushub.csproj|c:\\users\\unmushin\\desktop\\app\\mushub\\mushub.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|Mushub\\Mushub.csproj|solutionrelative:mushub\\mushub.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Mushub",
+              "DocumentMoniker": "C:\\Users\\unmushin\\Desktop\\app\\Mushub\\Mushub.csproj",
+              "RelativeDocumentMoniker": "Mushub\\Mushub.csproj",
+              "ToolTip": "C:\\Users\\unmushin\\Desktop\\app\\Mushub\\Mushub.csproj",
+              "RelativeToolTip": "Mushub\\Mushub.csproj",
+              "ViewState": "AgIAABcAAAAAAAAAAABBwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-05-14T14:28:39.18Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "XamlReader.cs",
+              "DocumentMoniker": "C:\\Users\\unmushin\\AppData\\Local\\Temp\\.vsdbgsrc\\5db00dcc32c2438d68438e1fcc211058187d505b791085c50320c78abe91b13b\\XamlReader.cs",
+              "RelativeDocumentMoniker": "..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\5db00dcc32c2438d68438e1fcc211058187d505b791085c50320c78abe91b13b\\XamlReader.cs",
+              "ToolTip": "C:\\Users\\unmushin\\AppData\\Local\\Temp\\.vsdbgsrc\\5db00dcc32c2438d68438e1fcc211058187d505b791085c50320c78abe91b13b\\XamlReader.cs [Lecture seule]",
+              "RelativeToolTip": "..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\5db00dcc32c2438d68438e1fcc211058187d505b791085c50320c78abe91b13b\\XamlReader.cs [Lecture seule]",
+              "ViewState": "AgIAAO4BAAAAAAAAAADwv/4BAAACAAAAAQAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-14T14:25:07.161Z",
+              "EditorCaption": " [Lecture seule]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "App.xaml",
+              "DocumentMoniker": "C:\\Users\\unmushin\\Desktop\\app\\Mushub\\App.xaml",
+              "RelativeDocumentMoniker": "Mushub\\App.xaml",
+              "ToolTip": "C:\\Users\\unmushin\\Desktop\\app\\Mushub\\App.xaml",
+              "RelativeToolTip": "Mushub\\App.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-05-14T14:22:02.856Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "PomodoroPage.xaml",
+              "DocumentMoniker": "C:\\Users\\unmushin\\Desktop\\app\\Mushub\\PomodoroPage.xaml",
+              "RelativeDocumentMoniker": "Mushub\\PomodoroPage.xaml",
+              "ToolTip": "C:\\Users\\unmushin\\Desktop\\app\\Mushub\\PomodoroPage.xaml",
+              "RelativeToolTip": "Mushub\\PomodoroPage.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-05-14T11:17:45.254Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "GitHubService.cs",
+              "DocumentMoniker": "C:\\Users\\unmushin\\Desktop\\app\\Mushub\\GitHubService.cs",
+              "RelativeDocumentMoniker": "Mushub\\GitHubService.cs",
+              "ToolTip": "C:\\Users\\unmushin\\Desktop\\app\\Mushub\\GitHubService.cs",
+              "RelativeToolTip": "Mushub\\GitHubService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-14T11:03:54.192Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

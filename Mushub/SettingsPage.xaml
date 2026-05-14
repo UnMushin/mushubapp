@@ -1,0 +1,142 @@
+<UserControl x:Class="Mushub.Views.SettingsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Style="{StaticResource Win11ScrollViewer}">
+        <StackPanel Margin="28,24,28,24">
+
+            <!-- Header -->
+            <TextBlock Text="⚙️ PARAMÈTRES"
+                       Foreground="{StaticResource AccentLightBrush}"
+                       FontFamily="Segoe UI Variable Display"
+                       FontSize="11" FontWeight="SemiBold"
+                       Margin="0,0,0,4"/>
+            <TextBlock Text="Configuration de Mushub"
+                       Foreground="{StaticResource TextSecondaryBrush}"
+                       FontSize="13" Margin="0,0,0,24"/>
+
+            <!-- GitHub Sync Section -->
+            <Border Style="{StaticResource CardBorder}" Padding="20,18" Margin="0,0,0,16">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                        <TextBlock Text="🐙" FontSize="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                        <StackPanel>
+                            <TextBlock Text="Synchronisation GitHub Gist"
+                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                       FontFamily="Segoe UI Variable Display"
+                                       FontSize="15" FontWeight="SemiBold"/>
+                            <TextBlock Text="Stockez vos tâches sur GitHub Gist pour les synchroniser entre appareils"
+                                       Foreground="{StaticResource TextSecondaryBrush}"
+                                       FontSize="12" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <TextBlock Text="Token GitHub (Personal Access Token avec scope 'gist')"
+                               Foreground="{StaticResource TextMutedBrush}"
+                               FontSize="11" Margin="0,0,0,6"/>
+                    <TextBox x:Name="GitHubTokenInput"
+                             Style="{StaticResource Win11TextBox}"
+                             Height="40"
+                             FontSize="13"
+                             VerticalContentAlignment="Center"
+                             Margin="0,0,0,12"/>
+
+                    <TextBlock Text="Gist ID (laisser vide pour en créer un nouveau automatiquement)"
+                               Foreground="{StaticResource TextMutedBrush}"
+                               FontSize="11" Margin="0,0,0,6"/>
+                    <TextBox x:Name="GistIdInput"
+                             Style="{StaticResource Win11TextBox}"
+                             Height="40"
+                             FontSize="13"
+                             VerticalContentAlignment="Center"
+                             Margin="0,0,0,16"/>
+
+                    <StackPanel Orientation="Horizontal">
+                        <Button Style="{StaticResource AccentButton}"
+                                Padding="16,8" Click="SaveGitHubSettings_Click">
+                            <TextBlock Text="💾 Sauvegarder" FontSize="13"/>
+                        </Button>
+                        <Button Style="{StaticResource Win11Button}"
+                                Padding="16,8" Margin="8,0,0,0"
+                                Click="TestGitHubConnection_Click">
+                            <TextBlock Text="🔗 Tester la connexion" FontSize="13"/>
+                        </Button>
+                    </StackPanel>
+
+                    <TextBlock x:Name="GitHubStatusText" Text=""
+                               FontSize="12" Margin="0,10,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Version info -->
+            <Border Style="{StaticResource CardBorder}" Padding="20,18" Margin="0,0,0,16">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="🍄 Version de Mushub"
+                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                   FontFamily="Segoe UI Variable Display"
+                                   FontSize="15" FontWeight="SemiBold"/>
+                        <TextBlock x:Name="VersionText"
+                                   Text="v1.0.0 — dernière version"
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   FontSize="12" Margin="0,4,0,0"/>
+                    </StackPanel>
+                    <Button Grid.Column="1" Style="{StaticResource Win11Button}"
+                            Padding="14,8" VerticalAlignment="Center"
+                            Click="CheckUpdate_Click">
+                        <TextBlock Text="🔄 Vérifier mises à jour" FontSize="12"/>
+                    </Button>
+                </Grid>
+            </Border>
+
+            <!-- Startup option -->
+            <Border Style="{StaticResource CardBorder}" Padding="20,18" Margin="0,0,0,16">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="🚀 Démarrage avec Windows"
+                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                   FontFamily="Segoe UI Variable Display"
+                                   FontSize="15" FontWeight="SemiBold"/>
+                        <TextBlock Text="Lance Mushub automatiquement au démarrage de Windows"
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   FontSize="12" Margin="0,4,0,0"/>
+                    </StackPanel>
+                    <CheckBox x:Name="StartupCheckBox"
+                              Grid.Column="1" Style="{StaticResource Win11CheckBox}"
+                              VerticalAlignment="Center"
+                              Checked="StartupCheckBox_Checked"
+                              Unchecked="StartupCheckBox_Unchecked"/>
+                </Grid>
+            </Border>
+
+            <!-- About -->
+            <Border Style="{StaticResource CardBorder}" Padding="20,18">
+                <StackPanel>
+                    <TextBlock Text="🍄 Mushub"
+                               Foreground="{StaticResource TextPrimaryBrush}"
+                               FontFamily="Segoe UI Variable Display"
+                               FontSize="18" FontWeight="SemiBold"/>
+                    <TextBlock Text="Application de productivité Windows 11"
+                               Foreground="{StaticResource TextSecondaryBrush}"
+                               FontSize="13" Margin="0,4,0,8"/>
+                    <TextBlock Foreground="{StaticResource TextMutedBrush}" FontSize="12">
+                        <Run Text="Développé par UnMushin — "/>
+                        <Hyperlink NavigateUri="https://github.com/UnMushin/mushubapp"
+                                   RequestNavigate="Hyperlink_RequestNavigate">
+                            github.com/UnMushin/mushubapp
+                        </Hyperlink>
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
